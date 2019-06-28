@@ -3,35 +3,11 @@
 using namespace std;
 
 vector<string> split_string(string);
-vector<int> ranking;
 
-int binarySearch(int l, int r, int x) 
-{ 
-    if (r >= l) { 
-        int mid = (l + r) / 2; 
-  
-        // If the element is present at the middle 
-        // itself 
-        if (ranking[mid] == x) 
-            return mid; 
-  
-        // If element is smaller than mid, then 
-        // it can only be present in left subarray 
-        if (ranking[mid] > x) 
-            return binarySearch(l, mid - 1, x); 
-  
-        // Else the element can only be present 
-        // in right subarray 
-        return binarySearch(mid + 1, r, x); 
-    } 
-  
-    // We reach here when element is not 
-    // present in array 
-    return r*(-1);
-} 
 
 // Complete the climbingLeaderboard function below.
 vector<int> climbingLeaderboard(vector<int> scores, vector<int> alice) {
+    vector<int> ranking;
     int nscores = scores.size(), i=0;
     while (i<nscores) {
         ranking.push_back(scores[i]);
@@ -41,16 +17,12 @@ vector<int> climbingLeaderboard(vector<int> scores, vector<int> alice) {
         }
     }
 
+    int checkpoint = ranking.size() - 1;
     int nalice = alice.size();
     vector<int> result;
     for (i=0; i<nalice; i++) {
-        int rank = binarySearch(0, ranking.size(), alice[i]);
-        if (rank>=0) {
-            result.push_back(rank+1);
-        } else {
-            result.push_back(rank*(-1)+1);
-            ranking.emplace(ranking.begin()+rank, alice[i]);
-        }
+        while (alice[i] > ranking[checkpoint]) checkpoint--;
+        result.push_back(checkpoint);
     }
 
     return result;
