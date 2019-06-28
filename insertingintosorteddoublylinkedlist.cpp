@@ -81,7 +81,8 @@ DoublyLinkedListNode* sortedInsert(DoublyLinkedListNode* head, int data) {
         return inserted_node;
     } else {
         bool insert = false;
-        DoublyLinkedListNode* tprev = head, tnext = head->next;
+        DoublyLinkedListNode* tprev = head;
+        DoublyLinkedListNode* tnext = head->next;
         while(tnext and !insert) {
             if (data<=tnext->data) {
                 tprev->next = inserted_node;
